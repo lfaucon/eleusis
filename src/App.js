@@ -189,7 +189,10 @@ class App extends Component {
               voulez ajouter une règle vous pouvez m'envoyer votre idée par
               email à l'adresse lpfaucon@gmail.com ou bien visiter la page
               github du projet:
-              <a href="">...</a>
+              <a href="https://github.com/lfaucon/eleusis">
+                https://github.com/lfaucon/eleusis
+              </a>
+              .
             </p>
           </div>
         )}
