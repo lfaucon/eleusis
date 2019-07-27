@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import "./App.css";
 
 import rules from "./rules";
@@ -18,11 +18,123 @@ const cards = "AC;AD;AH;AS;2C;2D;2H;2S;3C;3D;3H;3S;4C;4D;4H;4S;5C;5D;5H;5S;6C;6D
   ";"
 );
 
+const Solution = ({ handlePlay, sequence, rule, solution, newRule }) => {
+  const [step, setStep] = useState(0);
+  const [status, setStatus] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+  const [feedback, setFeedback] = useState("none");
+  const [card, setCard] = useState("");
+
+  const newCard = () => {
+    const randCards = [...cards]
+      .filter(x => x !== card)
+      .sort(() => 0.5 - Math.random());
+    const seq = sequence.filter(x => x.accepted).map(x => x.card);
+    const _card =
+      Math.random() > 0.5
+        ? randCards.find(x => !rule(seq, x))
+        : randCards.find(x => rule(seq, x));
+    return _card ? _card : randCards[0];
+  };
+
+  if (card === "") setCard(newCard());
+
+  const scorePrediction = prediction => {
+    if (feedback !== "none") return;
+    const result = handlePlay(card);
+    if (result === prediction) {
+      status[step] = 1;
+      setFeedback("correct" + (prediction ? "A" : "R"));
+    } else {
+      status[step] = -1;
+      setFeedback("wrong" + (prediction ? "A" : "R"));
+    }
+    setStatus([...status]);
+    setTimeout(() => {
+      setFeedback("none");
+      setStep(step + 1);
+      setCard(newCard());
+    }, 750);
+  };
+
+  return (
+    <div className="modal">
+      <div className="star-container">
+        {status.map((s, i) =>
+          s > 0 ? (
+            <i key={i} className="far fa-check-circle green" />
+          ) : s < 0 ? (
+            <i key={i} className="far fa-times-circle red" />
+          ) : (
+            <i key={i} className="far fa-circle" />
+          )
+        )}
+      </div>
+      {step < 10 && (
+        <p className="description">
+          Pour confirmer votre idée de règle, répondez à 10 questions. Acceptez
+          ou rejetez les cartes comme vous pensez que la règle secrète le
+          ferait.
+        </p>
+      )}
+      {step < 10 && (
+        <img src={"cards/" + card + ".png"} className="test-card" />
+      )}
+      {step < 10 && (
+        <div className="test-button">
+          <button onClick={() => scorePrediction(false)}>
+            {feedback === "correctR" ? (
+              <i className="fas fa-check feedback green" />
+            ) : feedback === "wrongR" ? (
+              <i className="fas fa-times feedback red" />
+            ) : (
+              "Rejeter"
+            )}
+          </button>
+          <button onClick={() => scorePrediction(true)}>
+            {feedback === "correctA" ? (
+              <i className="fas fa-check feedback green" />
+            ) : feedback === "wrongA" ? (
+              <i className="fas fa-times feedback red" />
+            ) : (
+              "Accepter"
+            )}
+          </button>
+          <u className="skip" onClick={() => setStep(10)}>
+            voir la solution sans faire le test
+          </u>
+        </div>
+      )}
+      {step > 9 && (
+        <div>
+          <p className="result-message">
+            {status.filter(x => x > 0).length === 10
+              ? "C'est Parfait !"
+              : status.filter(x => x > 0).length > 7
+              ? "Très bon score !"
+              : "Dommage ! "}
+          </p>
+          <p>Score: {status.filter(x => x > 0).length} / 10</p>
+          <div className="rule-display">
+            <p className="description">Solution:</p>
+            <p>{solution}</p>
+          </div>
+          <button onClick={() => newRule("easy", undefined)}>
+            Nouvelle Règle Simple
+          </button>
+          <button onClick={() => newRule("hard", undefined)}>
+            Nouvelle Règle Difficile
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
+
 class App extends Component {
   scrollInterval = null;
   prevScroll = -1;
 
-  handlePlay(card) {
+  handlePlay = card => {
     const { sequence, rule } = this.state;
 
     var rejectedCards = [];
@@ -34,12 +146,13 @@ class App extends Component {
       }
     });
 
-    if (rejectedCards.includes(card)) return;
-
     const accepted = rule(
       sequence.filter(x => x.accepted).map(x => x.card),
       card
     );
+
+    if (rejectedCards.includes(card)) return accepted;
+
     this.setState({ sequence: [...sequence, { card, accepted }] });
     if (this.scrollInterval) clearInterval(this.scrollInterval);
     this.prevScroll = -1;
@@ -52,7 +165,9 @@ class App extends Component {
         clearInterval(this.scrollInterval);
       }
     }, 10);
-  }
+
+    return accepted;
+  };
 
   newRule = (difficulty, ruleIdx) => {
     const ruleIndex =
@@ -91,7 +206,7 @@ class App extends Component {
   }
 
   render() {
-    const { _rule, sequence, view, solution } = this.state;
+    const { _rule, rule, sequence, view, solution } = this.state;
     const style = {
       top: 0,
       left: -120,
@@ -104,7 +219,7 @@ class App extends Component {
           <span id="title">ELEUSIS</span>
           {solution && (
             <button onClick={() => this.setView("solution")}>
-              {view === "solution" ? "Cacher la Solution" : "Voir la Solution"}
+              Tester ma Solution
             </button>
           )}
           <button onClick={() => this.newRule("easy", undefined)}>
@@ -154,7 +269,15 @@ class App extends Component {
             );
           })}
         </div>
-        {view === "solution" && <div className="modal">{solution}</div>}
+        {view === "solution" && (
+          <Solution
+            handlePlay={this.handlePlay}
+            sequence={sequence}
+            rule={rule}
+            solution={solution}
+            newRule={this.newRule}
+          />
+        )}
         {view === "list" && (
           <div className="modal">
             <span>Règles Simples:</span>
