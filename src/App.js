@@ -140,9 +140,7 @@ const Intro = ({ newRule, setView, setSequence }) => (
     </p>
     <p className="description">
       Sur ce site le jeu est une variante du jeu d'Eleusis qui peut être jouée
-      seul, mais vous pouvez aussi jouer à plusieurs sur le même ordinateur. Il
-      s'agit seulement de deviner la règle et à chaque tour n'importe quelle des
-      52 cartes peut être jouée.
+      seul, mais vous pouvez aussi jouer à plusieurs sur le même ordinateur.
     </p>
     <button
       onClick={() => {
@@ -196,6 +194,7 @@ const Tutoriel = ({ setSequence, setView }) => {
   if (step === 0) {
     return (
       <div className="modal">
+        Règles (1/5)
         <p className="description">
           Le but du jeu est de découvrir une règle secrète. Cette règle
           détermine quelles cartes peuvent être jouées ou non.
@@ -211,7 +210,7 @@ const Tutoriel = ({ setSequence, setView }) => {
             ]);
           }}
         >
-          Suivant (1/5)
+          Suivant
         </button>
       </div>
     );
@@ -220,6 +219,7 @@ const Tutoriel = ({ setSequence, setView }) => {
   if (step === 1) {
     return (
       <div className="modal">
+        Règles (2/5)
         <p className="description">
           Les cartes acceptées forment une séquence de gauche à droite.
         </p>
@@ -237,7 +237,7 @@ const Tutoriel = ({ setSequence, setView }) => {
             ]);
           }}
         >
-          Suivant (2/5)
+          Suivant
         </button>
       </div>
     );
@@ -246,13 +246,19 @@ const Tutoriel = ({ setSequence, setView }) => {
   if (step === 2) {
     return (
       <div className="modal">
+        Règles (3/5)
         <p className="description">
           Les cartes refusées sont placées en dessous à l'endroit où elles ont
-          été jouées. Par exemple, le roi de coeur et le 5 de carreau ont été
-          refusés après la dame de coeur et le roi de trèfle a été refusé après
-          le 8 de trèfle.
+          été jouées. Par exemple:
         </p>
-        <button onClick={() => setStep(3)}>Suivant (3/5)</button>
+        <ul className="description">
+          <li>
+            le roi de coeur et le 5 de carreau ont été refusés après la dame de
+            coeur.
+          </li>
+          <li>le roi de trèfle a été refusé après le 8 de trèfle.</li>
+        </ul>
+        <button onClick={() => setStep(3)}>Suivant</button>
       </div>
     );
   }
@@ -260,29 +266,31 @@ const Tutoriel = ({ setSequence, setView }) => {
   if (step === 3) {
     return (
       <div className="modal">
+        Règles (4/5)
         <p className="description">
-          Pour jouer une nouvelle choisissez la carte de votre choix en bas de
-          l'écran.
+          Pour jouer une nouvelle carte choisissez la carte de votre choix en
+          bas de l'écran.
         </p>
         <p className="description">
           Dans le jeu d'Eleusis jouer une carte est comme faire une expérience
           qui permet de vérifier ou bien de réfuter les théories concernant la
           règle secrète.
         </p>
-        <button onClick={() => setStep(4)}>Suivant (4/5)</button>
+        <button onClick={() => setStep(4)}>Suivant</button>
       </div>
     );
   }
 
   return (
     <div className="modal">
+      Règles (5/5)
       <p className="description">Devinez vous la règle de cet exemple?</p>
       <p className="description">
         A n'importe quel moment pendant une partie vous pourrez cliquer sur le
         bouton "Tester ma solution" dans la barre du haut si vous pensez avoir
         trouvé la règle secrète.
       </p>
-      <button onClick={() => setView("intro")}>Fin du tutoriel (5/5)</button>
+      <button onClick={() => setView("intro")}>Fin du tutoriel</button>
     </div>
   );
 };
