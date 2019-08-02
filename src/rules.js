@@ -1,6 +1,10 @@
 export default {
   easy: [
-    ["(s, c) => true", "All cards are accepted"],
+    [
+      "(s, c) => s.length === 0 || isRed(c) !== isRed(s[s.length - 1])",
+      "Alterner les cartes Rouges et Noires"
+    ],
+    ["(s, c) => true", "Toutes les cartes sont acceptées."],
     [
       '(s, c) => c[1] === "H" || c[1] === "S"',
       "Seulement Coeur et Pique sont acceptés."
@@ -38,10 +42,6 @@ export default {
     [
       "(s, c) => s.length === 0 || value(c) > value(s[s.length - 1]) || c[0] === 'A'",
       "Augmenter strictement la valeur ou jouer un As (As=1 est la plus petite carte)."
-    ],
-    [
-      "(s, c) => s.length === 0 || isRed(c) !== isRed(s[s.length - 1])",
-      "Alterner les cartes Rouges et Noires"
     ],
     [
       "(s, c) => s.length % 2 === 0 || c[1] === s[s.length - 1][1]",

@@ -83,22 +83,22 @@ button:active {
 #input {
   position: relative;
   width: 100%;
+  overflow-y: visible;
   overflow-x: auto;
-  overflow-y: hidden;
-  height: 100px;
+  height: 132px;
 }
 
 .modal {
   position: absolute;
-  width: 400px;
+  width: 420px;
   max-width: calc(100% - 84px);
-  padding: 42px;
+  padding: 32px;
   background: #eef6eee0;
   margin: auto;
   border-radius: 25px;
   align-self: center;
   margin-top: 42px;
-  box-shadow: 0px 0px 20px 0px #111;
+  box-shadow: 0px 0px 16px 0px #111;
   font-size: 24px;
   text-align: left;
   overflow: auto;
@@ -127,7 +127,7 @@ button:active {
 }
 
 .description {
-  font-size: 16px;
+  font-size: 20px;
 }
 
 .custom-rule {
@@ -202,4 +202,15 @@ button {
   text-align: center;
   left: calc(50% - 70px);
   transform: translate(-50%, 0);
+}
+
+.input {
+  top: 42px;
+  transition-duration: 0.5s;
+}
+
+.input:hover {
+  top: 0px;
+  margin-left: -10px;
+  width: 140px;
 }

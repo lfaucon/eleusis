@@ -20,7 +20,7 @@ const cards = "AC;AD;AH;AS;2C;2D;2H;2S;3C;3D;3H;3S;4C;4D;4H;4S;5C;5D;5H;5S;6C;6D
 
 const Solution = ({ handlePlay, sequence, rule, solution, newRule }) => {
   const [step, setStep] = useState(0);
-  const [status, setStatus] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+  const [status, setStatus] = useState([0, 0, 0, 0, 0]);
   const [feedback, setFeedback] = useState("none");
   const [card, setCard] = useState("");
 
@@ -69,17 +69,15 @@ const Solution = ({ handlePlay, sequence, rule, solution, newRule }) => {
           )
         )}
       </div>
-      {step < 10 && (
+      {step < 5 && (
         <p className="description">
           Pour confirmer votre idée de règle, répondez à 10 questions. Acceptez
           ou rejetez les cartes comme vous pensez que la règle secrète le
           ferait.
         </p>
       )}
-      {step < 10 && (
-        <img src={"cards/" + card + ".png"} className="test-card" />
-      )}
-      {step < 10 && (
+      {step < 5 && <img src={"cards/" + card + ".png"} className="test-card" />}
+      {step < 5 && (
         <div className="test-button">
           <button onClick={() => scorePrediction(false)}>
             {feedback === "correctR" ? (
@@ -104,16 +102,16 @@ const Solution = ({ handlePlay, sequence, rule, solution, newRule }) => {
           </u>
         </div>
       )}
-      {step > 9 && (
+      {step > 4 && (
         <div>
           <p className="result-message">
-            {status.filter(x => x > 0).length === 10
+            {status.filter(x => x > 0).length === 5
               ? "C'est Parfait !"
-              : status.filter(x => x > 0).length > 7
+              : status.filter(x => x > 0).length === 4
               ? "Très bon score !"
               : "Dommage ! "}
           </p>
-          <p>Score: {status.filter(x => x > 0).length} / 10</p>
+          <p>Score: {status.filter(x => x > 0).length} / 5</p>
           <div className="rule-display">
             <p className="description">Solution:</p>
             <p>{solution}</p>
@@ -130,13 +128,170 @@ const Solution = ({ handlePlay, sequence, rule, solution, newRule }) => {
   );
 };
 
+const Intro = ({ newRule, setView, setSequence }) => (
+  <div className="modal">
+    <span>Bienvenue sur le jeu en ligne Eleusis.</span>
+    <p className="description">
+      Pour apprendre les règles du jeu vous pouvez cliquer sur le boutton
+      "Apprendre les règles" ci-dessous ou bien visonner cette vidéo:{" "}
+      <a href="https://www.youtube.com/watch?v=wV4AIhDAz_I">
+        https://www.youtube.com/watch?v=wV4AIhDAz_I
+      </a>
+    </p>
+    <p className="description">
+      Sur ce site le jeu est une variante du jeu d'Eleusis qui peut être jouée
+      seul, mais vous pouvez aussi jouer à plusieurs sur le même ordinateur. Il
+      s'agit seulement de deviner la règle et à chaque tour n'importe quelle des
+      52 cartes peut être jouée.
+    </p>
+    <button
+      onClick={() => {
+        newRule("easy", 0);
+        setSequence([]);
+        setView("tutoriel");
+      }}
+    >
+      Apprendre les règles
+    </button>
+    <button onClick={() => newRule("easy", undefined)}>
+      Nouvelle Règle Simple
+    </button>
+    <button onClick={() => newRule("hard", undefined)}>
+      Nouvelle Règle Difficile
+    </button>
+  </div>
+);
+
+const RuleList = ({ newRule }) => (
+  <div className="modal">
+    <span>Règles Simples:</span>
+    {rules.easy.map(([_, solution], ruleIndex) => (
+      <div
+        key={solution}
+        className="rule-button"
+        onClick={() => newRule("easy", ruleIndex)}
+      >
+        <b>Règle {ruleIndex + 1}: </b>
+        {solution}
+      </div>
+    ))}
+    <span>Règles Difficiles:</span>
+    {rules.hard.map(([_, solution], ruleIndex) => (
+      <div
+        key={solution}
+        className="rule-button"
+        onClick={() => newRule("hard", ruleIndex)}
+      >
+        <b>Règle {ruleIndex + 1}: </b>
+        {solution}
+      </div>
+    ))}
+  </div>
+);
+
+const Tutoriel = ({ setSequence, setView }) => {
+  const [step, setStep] = useState(0);
+  const accepted = true;
+
+  if (step === 0) {
+    return (
+      <div className="modal">
+        <p className="description">
+          Le but du jeu est de découvrir une règle secrète. Cette règle
+          détermine quelles cartes peuvent être jouées ou non.
+        </p>
+        <button
+          onClick={() => {
+            setStep(1);
+            setSequence([
+              { card: "QH", accepted },
+              { card: "0S", accepted },
+              { card: "AH", accepted },
+              { card: "8C", accepted }
+            ]);
+          }}
+        >
+          Suivant (1/5)
+        </button>
+      </div>
+    );
+  }
+
+  if (step === 1) {
+    return (
+      <div className="modal">
+        <p className="description">
+          Les cartes acceptées forment une séquence de gauche à droite.
+        </p>
+        <button
+          onClick={() => {
+            setStep(2);
+            setSequence([
+              { card: "QH", accepted },
+              { card: "KH", accepted: false },
+              { card: "5D", accepted: false },
+              { card: "0S", accepted },
+              { card: "AH", accepted },
+              { card: "8C", accepted },
+              { card: "KC", accepted: false }
+            ]);
+          }}
+        >
+          Suivant (2/5)
+        </button>
+      </div>
+    );
+  }
+
+  if (step === 2) {
+    return (
+      <div className="modal">
+        <p className="description">
+          Les cartes refusées sont placées en dessous à l'endroit où elles ont
+          été jouées. Par exemple, le roi de coeur et le 5 de carreau ont été
+          refusés après la dame de coeur et le roi de trèfle a été refusé après
+          le 8 de trèfle.
+        </p>
+        <button onClick={() => setStep(3)}>Suivant (3/5)</button>
+      </div>
+    );
+  }
+
+  if (step === 3) {
+    return (
+      <div className="modal">
+        <p className="description">
+          Pour jouer une nouvelle choisissez la carte de votre choix en bas de
+          l'écran.
+        </p>
+        <p className="description">
+          Dans le jeu d'Eleusis jouer une carte est comme faire une expérience
+          qui permet de vérifier ou bien de réfuter les théories concernant la
+          règle secrète.
+        </p>
+        <button onClick={() => setStep(4)}>Suivant (4/5)</button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="modal">
+      <p className="description">Devinez vous la règle de cet exemple?</p>
+      <p className="description">
+        A n'importe quel moment pendant une partie vous pourrez cliquer sur le
+        bouton "Tester ma solution" dans la barre du haut si vous pensez avoir
+        trouvé la règle secrète.
+      </p>
+      <button onClick={() => setView("intro")}>Fin du tutoriel (5/5)</button>
+    </div>
+  );
+};
+
 class App extends Component {
   scrollInterval = null;
   prevScroll = -1;
 
-  handlePlay = card => {
-    const { sequence, rule } = this.state;
-
+  computeRejectedCards = sequence => {
     var rejectedCards = [];
     sequence.forEach(c => {
       if (c.accepted) {
@@ -145,6 +300,12 @@ class App extends Component {
         rejectedCards.push(c.card);
       }
     });
+    this.setState({ rejectedCards });
+  };
+
+  handlePlay = card => {
+    const { sequence, rule, rejectedCards } = this.state;
+    if (!sequence || !rule || !rejectedCards) return;
 
     const accepted = rule(
       sequence.filter(x => x.accepted).map(x => x.card),
@@ -153,7 +314,10 @@ class App extends Component {
 
     if (rejectedCards.includes(card)) return accepted;
 
-    this.setState({ sequence: [...sequence, { card, accepted }] });
+    const newSequence = [...sequence, { card, accepted }];
+    this.setState({ sequence: newSequence });
+    this.computeRejectedCards(newSequence);
+
     if (this.scrollInterval) clearInterval(this.scrollInterval);
     this.prevScroll = -1;
     this.scrollInterval = setInterval(() => {
@@ -199,14 +363,14 @@ class App extends Component {
 
   constructor(props) {
     super(props);
-
     this.state = {
-      view: "intro"
+      view: "intro",
+      rejectedCards: []
     };
   }
 
   render() {
-    const { _rule, rule, sequence, view, solution } = this.state;
+    const { _rule, rule, sequence, view, solution, rejectedCards } = this.state;
     const style = {
       top: 0,
       left: -120,
@@ -257,17 +421,19 @@ class App extends Component {
             })}
         </div>
         <div id="input">
-          {cards.map((card, i) => {
-            return (
-              <img
-                key={card + i}
-                src={"cards/" + card + ".png"}
-                className="card"
-                style={{ left: 42 * i }}
-                onClick={() => this.handlePlay(card)}
-              />
-            );
-          })}
+          {cards
+            .filter(x => !rejectedCards.includes(x))
+            .map((card, i) => {
+              return (
+                <img
+                  key={card + i}
+                  src={"cards/" + card + ".png"}
+                  className="card input"
+                  style={{ left: 42 * i }}
+                  onClick={() => this.handlePlay(card)}
+                />
+              );
+            })}
         </div>
         {view === "solution" && (
           <Solution
@@ -278,32 +444,7 @@ class App extends Component {
             newRule={this.newRule}
           />
         )}
-        {view === "list" && (
-          <div className="modal">
-            <span>Règles Simples:</span>
-            {rules.easy.map(([_, solution], ruleIndex) => (
-              <div
-                key={solution}
-                className="rule-button"
-                onClick={() => this.newRule("easy", ruleIndex)}
-              >
-                <b>Règle {ruleIndex + 1}: </b>
-                {solution}
-              </div>
-            ))}
-            <span>Règles Difficiles:</span>
-            {rules.hard.map(([_, solution], ruleIndex) => (
-              <div
-                key={solution}
-                className="rule-button"
-                onClick={() => this.newRule("hard", ruleIndex)}
-              >
-                <b>Règle {ruleIndex + 1}: </b>
-                {solution}
-              </div>
-            ))}
-          </div>
-        )}
+        {view === "list" && <RuleList newRule={this.newRule} />}
         {view === "custom" && (
           <div className="modal">
             <span>Créer une nouvelle règle</span>
@@ -320,33 +461,17 @@ class App extends Component {
           </div>
         )}
         {view === "intro" && (
-          <div className="modal">
-            <span>Bienvenue sur le jeu en ligne Eleusis.</span>
-            <p className="description">
-              Pour apprendre les règles du jeu je vous conseille de visonner
-              cette vidéo:{" "}
-              <a href="https://www.youtube.com/watch?v=wV4AIhDAz_I">
-                https://www.youtube.com/watch?v=wV4AIhDAz_I
-              </a>
-            </p>
-            <p className="description">
-              Sur ce site le jeu est une variante du jeu d'Eleusis. Il s'agit
-              seulement de deviner la règle et à chaque tour n'importe quelle
-              des 52 cartes peut être jouer.
-            </p>
-            <p className="description">
-              Vous pouvez utiliser ce site comme il vous semble. Par exemple:
-              vous pouvez jouer tout seul à essayer de deviner la règle
-              correctement en ayant joué le moins de cartes possibles; Vous
-              pouvez aussi jouer en groupe sur le même ordinateur.
-            </p>
-            <button onClick={() => this.newRule("easy", undefined)}>
-              Nouvelle Règle Simple
-            </button>
-            <button onClick={() => this.newRule("hard", undefined)}>
-              Nouvelle Règle Difficile
-            </button>
-          </div>
+          <Intro
+            setSequence={x => this.setState({ sequence: x })}
+            newRule={this.newRule}
+            setView={this.setView}
+          />
+        )}
+        {view === "tutoriel" && (
+          <Tutoriel
+            setSequence={x => this.setState({ sequence: x })}
+            setView={this.setView}
+          />
         )}
       </div>
     );
