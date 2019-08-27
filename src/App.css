@@ -206,7 +206,8 @@ button {
 
 .input {
   top: 42px;
-  transition-duration: 0.5s;
+  transition-duration: 0.3s;
+  cursor: pointer;
 }
 
 .input:hover {

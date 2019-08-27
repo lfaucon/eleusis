@@ -71,7 +71,7 @@ const Solution = ({ handlePlay, sequence, rule, solution, newRule }) => {
       </div>
       {step < 5 && (
         <p className="description">
-          Pour confirmer votre idée de règle, répondez à 10 questions. Acceptez
+          Pour confirmer votre idée de règle, répondez à 5 questions. Acceptez
           ou rejetez les cartes comme vous pensez que la règle secrète le
           ferait.
         </p>
