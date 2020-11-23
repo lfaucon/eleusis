@@ -20,8 +20,7 @@ body,
   color: white;
   font-weight: 600;
   font-size: 300%;
-  margin-bottom: 24px;
-  border-bottom: solid #002200 4px;
+  border-bottom: solid black 4px;
   display: flex;
   overflow-x: auto;
 }
@@ -45,11 +44,29 @@ button:active {
   flex: 1;
 }
 
-#table {
+#tableContainer {
   width: 100%;
+  flex: 1 1 0px;
+  display: flex;
+  flex-direction: row;
+}
+
+#table {
   overflow: auto;
   position: relative;
   flex: 1 1 0px;
+}
+
+#sidepanel {
+  flex: 0 0 256px;
+  border-left: 4px solid black;
+  padding: 8px;
+  color: white;
+}
+
+#sidepanel h3 {
+  border-top: 1px solid white;
+  padding-top: 12px;
 }
 
 .modal button {
@@ -86,6 +103,7 @@ button:active {
   overflow-y: visible;
   overflow-x: auto;
   height: 132px;
+  border-top: 4px solid black;
 }
 
 .modal {
@@ -214,4 +232,20 @@ button {
   top: 0px;
   margin-left: -10px;
   width: 140px;
+}
+
+.selected {
+  box-shadow: 0px 0px 10px 6px #fffb;
+}
+
+table,
+th,
+td {
+  border: 1px solid white;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 12px;
 }
