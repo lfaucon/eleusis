@@ -204,7 +204,7 @@ const SidePanel = ({ game, name, gameId }) => {
           {players.map((p) => (
             <tr key={p}>
               <th>{p}</th>
-              <th>{(game['score_' + p] || 0).toFixed()}</th>
+              <th>{(game['score_' + p] || 0).toFixed(3)}</th>
             </tr>
           ))}
         </tbody>
@@ -285,10 +285,8 @@ const NamePicker = ({ game, setName, gameId }) => {
 
   return (
     <div className="picker">
-      Share this page URL to invite friends
-      <br />
-      Select or add your name:
-      <br />
+      <p>Share this page URL to invite friends</p>
+      <p>Select or add your name:</p>
       {game.players.map((p) => (
         <button key={p} onClick={() => setName(p)}>
           {p}
@@ -297,9 +295,14 @@ const NamePicker = ({ game, setName, gameId }) => {
       {game.master && (
         <button onClick={() => setName(game.master)}>{game.master}*</button>
       )}
-      <br />
-      <input type="text" onChange={(e) => setTempName(e.target.value)} />
-      <button onClick={handleNewName}>submit</button>
+      <div>
+        <input
+          placeholder="name"
+          type="text"
+          onChange={(e) => setTempName(e.target.value)}
+        />
+        <button onClick={handleNewName}>Submit</button>
+      </div>
     </div>
   );
 };
@@ -348,12 +351,19 @@ const GamePicker = ({ setGameId }) => {
 
   return (
     <div className="picker">
-      Join a game or create a new one
-      <br />
-      <input type="text" onChange={(e) => setTempId(e.target.value)} />
-      <button onClick={() => setGameId(tempId)}>join</button>
-      <br />
-      <button onClick={createGame}>Create a new game</button>
+      <h1>ELEUSIS 2</h1>
+      <h2>Welcome!</h2>
+      <span>Join a game:</span>
+      <div>
+        <input
+          type="text"
+          placeholder="Game ID"
+          onChange={(e) => setTempId(e.target.value)}
+        />
+        <button onClick={() => setGameId(tempId)}>Join</button>
+      </div>
+      <span>Or create a game:</span>
+      <button onClick={createGame}>Create game</button>
     </div>
   );
 };

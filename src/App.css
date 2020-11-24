@@ -5,12 +5,36 @@ body,
   height: 100%;
   width: 100%;
   overflow: hidden;
+  background: #005500;
+  font-family: Garamond;
 }
 
 .App {
-  background: #005500;
   display: flex;
   flex-direction: column;
+}
+
+.picker {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  color: white;
+  font-size: 30px;
+}
+
+.picker button {
+  font-size: 24px;
+  padding: 6px;
+  margin: 4px;
+}
+
+.picker input {
+  font-size: 24px;
+  padding: 6px;
+  margin: 4px;
 }
 
 .title {
