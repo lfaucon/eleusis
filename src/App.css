@@ -17,12 +17,14 @@ body,
 .picker {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  height: 100%;
+  height: calc(100% - 180px);
   width: 100%;
   color: white;
-  font-size: 30px;
+  font-size: 24px;
+  overflow: auto;
+  padding-top: 120px;
+  padding-bottom: 60px;
 }
 
 .picker button {
@@ -31,13 +33,40 @@ body,
   margin: 4px;
 }
 
-.picker input {
+.picker input,
+.picker select,
+.picker ul {
+  max-width: calc(100% - 8px);
+  width: 500px;
   font-size: 24px;
   padding: 6px;
   margin: 4px;
 }
 
+.picker .doc {
+  font-size: 18px;
+}
+
+.picker textarea {
+  resize: none;
+  max-width: calc(100% - 8px);
+  width: 500px;
+  flex: 0 0 100px;
+}
+
+.code {
+  font-family: monospace;
+}
+
+.picker span,
+.picker p {
+  width: 500px;
+  max-width: calc(100% - 8px);
+  text-align: center;
+}
+
 .title {
+  flex: 0 0 auto;
   position: relative;
   width: calc(100% - 42px);
   padding-left: 42px;
@@ -70,7 +99,8 @@ button:active {
 
 #tableContainer {
   width: 100%;
-  flex: 1 1 0px;
+  height: 0px;
+  flex: 1 1 auto;
   display: flex;
   flex-direction: row;
 }
@@ -86,6 +116,8 @@ button:active {
   border-left: 4px solid black;
   padding: 8px;
   color: white;
+  height: calc(100% - 16px);
+  overflow: auto;
 }
 
 #sidepanel h3 {
@@ -122,6 +154,7 @@ button:active {
 }
 
 #input {
+  flex: 0 0 132px;
   position: relative;
   width: 100%;
   overflow-y: visible;
@@ -272,4 +305,48 @@ td {
 th,
 td {
   padding: 12px;
+}
+
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 25px;
+  margin: 0px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: 0.2s;
+  transition: opacity 0.2s;
+}
+
+.slider:hover {
+  opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  background: #4caf50;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  background: #4caf50;
+  cursor: pointer;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type='number'] {
+  -moz-appearance: textfield;
 }

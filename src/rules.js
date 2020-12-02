@@ -1,240 +1,162 @@
 export default {
   easy: [
-    [
-      "(s, c) => s.length === 0 || isRed(c) !== isRed(s[s.length - 1])",
-      "Alterner les cartes Rouges et Noires"
-    ],
-    ["(s, c) => true", "Toutes les cartes sont acceptées."],
-    [
-      '(s, c) => c[1] === "H" || c[1] === "S"',
-      "Seulement Coeur et Pique sont acceptés."
-    ],
-    [
-      '(s, c) => c[1] === "S" || c[1] === "D"',
-      "Seulement Carreau et Pique sont acceptés."
-    ],
-    [
-      '(s, c) => c[1] === "C" || c[1] === "D"',
-      "Seulement Carreau et Trèfle sont acceptés."
-    ],
-    [
-      '(s, c) => c[1] === "H" || c[1] === "C"',
-      "Seulement Coeur et Trèfle sont acceptés."
-    ],
-    ["(s, c) => isRed(c)", "Seulement les cartes Rouges sont acceptées."],
-    ["(s, c) => !isRed(c)", "Seulement les cartes Noires sont acceptées."],
-    [
-      "(s, c) => s.length === 0 || c[1] === s[s.length - 1][1] || c[0] === s[s.length - 1][0]",
-      "Jouer soit la même Famille soit la même valeur."
-    ],
-    [
-      "(s, c) => s.length === 0 || (c[1] !== s[s.length - 1][1] && c[0] !== s[s.length - 1][0])",
-      "Toujours changer la Famille des cartes (Coeur, Carreau, Trèfle ou Pique)."
-    ],
-    [
-      "(s, c) => s.length === 0 || isFigure(c) !== isFigure(s[s.length - 1])",
-      "Faire alterner Têtes et Nombres (un As compte pour le nombre 1)."
-    ],
-    [
-      "(s, c) => s.length === 0 || value(c) < value(s[s.length - 1]) || isFigure(c)",
-      "Diminuer strictement la valeur ou jouer une Tête (J,Q,K)."
-    ],
-    [
-      "(s, c) => s.length === 0 || value(c) > value(s[s.length - 1]) || c[0] === 'A'",
-      "Augmenter strictement la valeur ou jouer un As (As=1 est la plus petite carte)."
-    ],
-    [
-      "(s, c) => s.length % 2 === 0 || c[1] === s[s.length - 1][1]",
-      "Une carte sur deux doit être de la même famille que la carte précédente."
-    ],
-    [
-      "(s, c) => s.length === 0 || !isFigure(c) || !isFigure(s[s.length - 1])",
-      "Ne pas jouer deux Têtes à la suite."
-    ],
-    [
-      "(s, c) => s.length === 0 || isFigure(c) || isFigure(s[s.length - 1])",
-      "Ne pas jouer deux Nombres à la suite (l'As compte comme le nomre 1)."
-    ],
-    [
-      "(s, c) => s.length === 0 || !isRed(c) || !isRed(s[s.length - 1])",
-      "Ne pas jouer deux cartes Rouges à la suite."
-    ],
-    [
-      "(s, c) => s.length === 0 || isRed(c) || isRed(s[s.length - 1])",
-      "Ne pas jouer deux cartes Noires à la suite."
-    ],
-    ['(s, c) => c[1] === "S"', "Jouer seulement des Piques."],
-    ['(s, c) => c[1] === "H"', "Jouer seulement des Coeurs."],
-    ['(s, c) => c[1] === "D"', "Jouer seulement des Carreaux."],
-    ['(s, c) => c[1] === "C"', "Jouer seulement des Trèfles."],
-    ["(s, c) => isFigure(c)", "Jouer seulement des Têtes."],
-    ["(s, c) => !isFigure(c)", "Jouer seulement des Nombres."],
-    [
-      "(s, c) => s.length === 0 || c[1] !== s[s.length - 1][1]",
-      "Ne pas jouer la même Famille que la carte précédente."
-    ],
-    [
-      "(s, c) => isRed(c) === isFigure(c)",
-      "Jouer seulement les Têtes Rouges ou bien les Nombres Noirs"
-    ],
-    [
-      "(s, c) => isRed(c) === !isFigure(c)",
-      "Jouer seulement les Nombres Rouges ou bien les Têtes Noires"
-    ]
+    '//Accept only Red cards\n(card) => isRed(card)',
+    '//Accept only Black cards\n(card) => isBlack(card)',
+    '//Accept only Figures\n(card) => isFigure(card)',
+    '//Accept only Numbers\n(card) => isNumber(card)',
+    '//Accept only Heart and Spade\n(card) => "HS".includes(getSymbol(card))',
+    '//Accept only Diamond and Spade\n(card) => "DS".includes(getSymbol(card))',
+    '//Accept only Diamond and Clubs\n(card) => "DC".includes(getSymbol(card))',
+    '//Accept only Heart and Clubs\n(card) => "HC".includes(getSymbol(card))',
+    '//Accept only Hearts\n(card) => getSymbol(card) === "H"',
+    '//Accept only Spades\n(card) => getSymbol(card) === "S"',
+    '//Accept only Clubs\n(card) => getSymbol(card) === "C"',
+    '//Accept only Diamonds\n(card) => getSymbol(card) === "D"',
+    '//Accept only values that are prime numbers\n(card) => [2,3,5,7,11,13].includes(getValue(card))',
+    '//Accept only values that are not prime numbers\n(card) => [1,4,6,8,9,10,12].includes(getValue(card))',
+    '//Accept only Red Figures or Black Numbers\n(card) => isRed(card) === isFigure(card)',
+    '//Accept only Black Figures or Red Numbers\n(card) => isBlack(card) === isFigure(card)',
+    '//Accept only even values\n(card) => getValue(card) % 2 === 0',
+    '//Accept only odd values\n(card) => getValue(card) % 2 === 1',
+    '//Accept only multiples of 3\n(card) => getValue(card) % 3 === 0',
+    '//Accept only values that are 1 plus a multiple of 3 \n(card) => getValue(card) % 3 === 1',
+    '//Accept only multiples of 4\n(card) => getValue(card) % 4 === 0',
+    '//Accept only values that are 1 plus a multiple of 4 \n(card) => getValue(card) % 4 === 1',
+    '//Accept only even red and odd black cards\n(card) => (getValue(card) % 2 === 0) === isRed(card)',
+    '//Accept only odd red and even black cards\n(card) => (getValue(card) % 2 === 1) === isRed(card)',
+    '//Accept only red prime or black not-prime\n(card) => [2,3,5,7,11,13].includes(getValue(card)) === isRed(card)',
+    '//Accept only red not-prime or black prime\n(card) => [2,3,5,7,11,13].includes(getValue(card)) === isBlack(card)',
+  ],
+  medium: [
+    '//Alternate Red and Black\n(card, history) => !getLast(history) || isRed(card) !== isRed(getLast(history))',
+    '//Alternate strictly above and below 5\n(card, history) => (getValue(card) > 5) !== (getValue(getLast(history)) > 5)',
+    '//Alternate strictly above and below 6\n(card, history) => (getValue(card) > 6) !== (getValue(getLast(history)) > 6)',
+    '//Alternate strictly above and below 7\n(card, history) => (getValue(card) > 7) !== (getValue(getLast(history)) > 7)',
+    '//Alternate strictly above and below 8\n(card, history) => (getValue(card) > 8) !== (getValue(getLast(history)) > 8)',
+    '//Alternate strictly above and below 9\n(card, history) => (getValue(card) > 9) !== (getValue(getLast(history)) > 9)',
+    '//Alternate even and odd values\n(card, history) => (getValue(card) % 2 !== getValue(getLast(history)) % 2)',
+    '//Same Symbol or same value\n(card, history) => !getLast(history) || getSymbol(card) === getSymbol(getLast(history)) || getValue(card) === getValue(getLast(history))',
+    '//Always change Symbol and value\n(card, history) => (getSymbol(card) !== getSymbol(getLast(history)) && getValue(card) !== getValue(getLast(history)))',
+    '//Always change Symbol\n(card, history) => getSymbol(card) !== getSymbol(getLast(history))',
+    '//Alternate Figures and Numbers\n(card, history) => !getLast(history) || isFigure(card) !== isFigure(getLast(history))',
+    '//No two Figures in a row\n(card, history) => !isFigure(card) || !isFigure(getLast(history))',
+    '//No two Numbers in a row\n(card, history) => !isNumber(card) || !isNumber(getLast(history))',
+    '//No two Red in a row\n(card, history) => !isRed(card) || !isRed(getLast(history))',
+    '//No two Black in a row\n(card, history) => !isBlack(card) || !isBlack(getLast(history))',
+    '//Lower value or play a Figures\n(card, history) => !getLast(history) || isFigure(card) || getValue(card) < getValue(getLast(history))',
+    '//Increase value or play an Ace\n(card, history) => getValue(card) === 1 || getValue(card) > getValue(getLast(history))',
+    '//After red play odd, after black play even\n(card, history) => !getLast(history) || (getValue(card) % 2 === 1) === isRed(getLast(history))',
+    '//After red play even, after black play odd\n(card, history) => !getLast(history) || (getValue(card) % 2 === 0) === isRed(getLast(history))',
+    '//After odd play red, after even play black\n(card, history) => !getLast(history) || (getValue(getLast(history)) % 2 === 1) === isRed(card)',
+    '//After even play red, after odd play black\n(card, history) => !getLast(history) || (getValue(getLast(history)) % 2 === 0) === isRed(card)',
+    '//If playing red increase, else decrease or equal \n(card, history) => !getLast(history) || isRed(card) === (getValue(getLast(history)) > getValue(card))',
+    '//If playing black increase, else decrease or equal \n(card, history) => !getLast(history) || isBlack(card) === (getValue(getLast(history)) > getValue(card))',
+    '//If playing red decrease, else increase or equal \n(card, history) => !getLast(history) || isRed(card) === (getValue(getLast(history)) < getValue(card))',
+    '//If playing black decrease, else increase or equal \n(card, history) => !getLast(history) || isBlack(card) === (getValue(getLast(history)) < getValue(card))',
+    '//After red increase, else decrease or equal \n(card, history) => !getLast(history) || isRed(getLast(history)) === (getValue(getLast(history)) > getValue(card))',
+    '//After black increase, else decrease or equal \n(card, history) => !getLast(history) || isBlack(getLast(history)) === (getValue(getLast(history)) > getValue(card))',
+    '//After red decrease, else increase or equal \n(card, history) => !getLast(history) || isRed(getLast(history)) === (getValue(getLast(history)) < getValue(card))',
+    '//After black decrease, else increase or equal \n(card, history) => !getLast(history) || isBlack(getLast(history)) === (getValue(getLast(history)) < getValue(card))',
+    '//Alternate (Heart and Spade) and not\n(card, history) => "HS".includes(getSymbol(card)) !== "HS".includes(getSymbol(getLast(history)))',
+    '//Alternate (Heart and Clubs) and not\n(card, history) => "HS".includes(getSymbol(card)) !== "HC".includes(getSymbol(getLast(history)))',
+    '//Alternate (Diamond and Spade) and not\n(card, history) => "HS".includes(getSymbol(card)) !== "DS".includes(getSymbol(getLast(history)))',
+    '//Alternate (Diamond and Clubs) and not\n(card, history) => "HS".includes(getSymbol(card)) !== "DC".includes(getSymbol(getLast(history)))',
   ],
   hard: [
+    '//Accept 5 cards then reject everything\n(card, history) => history.length < 5',
+    '//Accept 6 cards then reject everything\n(card, history) => history.length < 6',
+    '//Accept 7 cards then reject everything\n(card, history) => history.length < 7',
+    '//Accept 8 cards then reject everything\n(card, history) => history.length < 8',
+    '//Accept 9 cards then reject everything\n(card, history) => history.length < 9',
+    '//Accept 10 cards then reject everything\n(card, history) => history.length < 10',
+    '//Same parity as the number of Red cards.\n(card, history) => getValue(card) % 2 === history.filter(isRed).length % 2',
+    '//Never repeat a previous value.\n(card, history) => !history.find(c => getValue(c) === getValue(card))',
+    '//Every other card must have the same Symbol as previous card\n(card, history) => history.length % 2 === 0 || getSymbol(card) === getSymbol(getLast(history))',
+    '//Only every third card can and must change the Symbol\n(card, history) => (history.length % 3 === 0) !== (getSymbol(card) === getSymbol(getLast(history)))',
+    '//Every other card must have the same value as previous card\n(card, history) => history.length % 2 === 0 || getValue(card) === getValue(getLast(history))',
+    '//Every other card must be Heart\n(card, history) => history.length % 2 === 0 || getSymbol(card) === "H"',
+    '//Every other card must be Spade\n(card, history) => history.length % 2 === 0 || getSymbol(card) === "S"',
+    '//Every other card must be Club\n(card, history) => history.length % 2 === 0 || getSymbol(card) === "C"',
+    '//Every other card must be Diamond\n(card, history) => history.length % 2 === 0 || getSymbol(card) === "D"',
+    '//Cards must cycle 1,2,3 modulo 3\n(card, history) => (16 - getValue(card) + history.length) % 3 === 0',
+    '//Cards must cycle 1,2,3,4 modulo 4\n(card, history) => (17 - getValue(card) + history.length) % 4 === 0',
+    '//Cards values must match the decimals of Pi\n(card, history) => getValue(card) === Number("31415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679"[history.length])',
+    '//Play a figure only when the position in sequence is prime\n(card, history) => [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97].includes(history.length + 1) === isFigure(card)',
+    '//Play a number only when the position in sequence is prime\n(card, history) => [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97].includes(history.length + 1) === isNumber(card)',
+    '//Card value cannot be more than the number of accepted card plus 1\n(card, history) => getValue(card) < history.length + 2',
+    '//Card value cannot be less than the number of accepted card\n(card, history) => getValue(card) > history.length',
+  ],
+};
+
+const french = {
+  medium: [
     [
-      '(s, c) => s.length % 2 === 0 || c[1] === "H"',
-      "Une carte sur deux doit être un Coeur."
+      '(s, c) => s.length === 0 || Math.abs(value(c) - value(s[s.length - 1])) < 5',
+      'La difference entre deux cartes consécutives doit être 4 ou moins (J=11, Q=12, K=13, A=1).',
     ],
     [
-      '(s, c) => s.length % 2 === 0 || c[1] === "S"',
-      "Une carte sur deux doit être un Pique."
+      '(s, c) => s.length === 0 || Math.abs(value(c) - value(s[s.length - 1])) < 4',
+      'La difference entre deux cartes consécutives doit être 3 ou moins (J=11, Q=12, K=13, A=1).',
     ],
     [
-      '(s, c) => s.length % 2 === 0 || c[1] === "C"',
-      "Une carte sur deux doit être un Trèfle."
+      '(s, c) => s.length === 0 || Math.abs(value(c) - value(s[s.length - 1])) < 3',
+      'La difference entre deux cartes consécutives doit être 2 ou moins (J=11, Q=12, K=13, A=1).',
     ],
     [
-      '(s, c) => s.length % 2 === 0 || c[1] === "D"',
-      "Une carte sur deux doit être un Carreau."
+      '(s, c) => s.length === 0 || Math.abs(value(c) - value(s[s.length - 1])) > 2',
+      'La difference entre deux cartes consécutives doit être 3 ou plus (J=11, Q=12, K=13, A=1).',
     ],
     [
-      "(s, c) => !s.find(x => x[0] === c[0])",
-      "Chaque valeur de carte ne peut être jouée qu'une seule fois."
+      '(s, c) => s.length === 0 || Math.abs(value(c) - value(s[s.length - 1])) > 3',
+      'La difference entre deux cartes consécutives doit être 4 ou plus (J=11, Q=12, K=13, A=1).',
     ],
     [
-      "(s, c) => s.length === 0 || (value(s[s.length - 1]) + value(c)) % 2 === 1",
-      "Alterner les valeurs paires et impaires (J=11, Q=12, K=13, A=1)."
+      '(s, c) => s.length === 0 || Math.abs(value(c) - value(s[s.length - 1])) > 4',
+      'La difference entre deux cartes consécutives doit être 5 ou plus (J=11, Q=12, K=13, A=1).',
     ],
     [
-      "(s, c) => s.length === 0 || value(c) % 2 === (isRed(s[s.length - 1]) ? 0 : 1)",
-      "Après une carte rouge jouer une valeur paire et après une carte noire jouer une valeur impaire (J=11, Q=12, K=13, A=1)."
+      '(s, c) => s.length === 0 || value(c) % 3 > 0 || value(s[s.length - 1]) % 3 > 0',
+      'Ne pas jouer deux valeurs multiple de 3 à la suite (J=11, Q=12, K=13, A=1).',
     ],
     [
-      "(s, c) => s.length === 0 || value(c) % 2 === (isRed(s[s.length - 1]) ? 1 : 0)",
-      "Après une carte noire jouer une valeur paire et après une carte rouge jouer une valeur impaire (J=11, Q=12, K=13, A=1)."
-    ],
-    ["(s, c) => s.length < 10", "Only 10 cards can be played, not more."],
-    [
-      "(s, c) => s.length === 0 || (isRed(c) ? value(c) > value(s[s.length - 1]) : value(c) < value(s[s.length - 1]))",
-      "Les cartes rouges doivent être supérieures à la carte précédente et les cartes noires inférieures."
+      '(s, c) => s.length === 0 || isHC(c) !== isHC(s[s.length - 1])',
+      "Alterner entre 'Coeur et Trèfle' et 'Pique et Carreau'.",
     ],
     [
-      "(s, c) => s.length === 0 || (!isRed(c) ? value(c) > value(s[s.length - 1]) : value(c) < value(s[s.length - 1]))",
-      "Les cartes rouges doivent être inférieures à la carte précédente et les cartes noires supérieures."
+      '(s, c) => s.length === 0 || isHC(c) !== isHC(s[s.length - 1])',
+      "Alterner entre 'Coeur et Pique' et 'Trèfle et Carreau'.",
     ],
     [
-      "(s, c) => s.length === 0 || value(c) < 7 !== value(s[s.length - 1]) < 7",
-      "Alterner les cartes inférieures à 7 et les cartes supérieures ou égales à 7 (J=11, Q=12, K=13, A=1)."
+      '(s, c) => s.length < 2 || (value(c) !== value(s[s.length - 1]) && value(c) < value(s[s.length - 1]) !== value(s[s.length - 1]) < value(s[s.length - 2]))',
+      'Alterner entre augmenter la valeur et diminuer la valeur des cartes.',
     ],
     [
-      "(s, c) => s.length === 0 || value(c) < 6 !== value(s[s.length - 1]) < 6",
-      "Alterner les cartes inférieures à 6 et les cartes supérieures ou égales à 6 (J=11, Q=12, K=13, A=1)."
+      '(s, c) => value(c) < s.length + 2',
+      'La valeur des cartes ne doit pas être plus que le nombre de carte acceptées plus 1 (J=11, Q=12, K=13, A=1)).',
     ],
     [
-      "(s, c) => s.length === 0 || value(c) < 8 !== value(s[s.length - 1]) < 8",
-      "Alterner les cartes inférieures à 8 et les cartes supérieures ou égales à 8 (J=11, Q=12, K=13, A=1)."
+      '(s, c) => s.length === 0 || isPrime(c) !== isPrime(s[s.length - 1])',
+      'Alterner les valeurs qui sont et ne sont pas des nombres premiers (J=11, Q=12, K=13, A=1).',
     ],
     [
-      "(s, c) => s.length === 0 || (value(c) + value(s[s.length - 1])) % 3 === 0",
-      "La somme des valeurs de deux cartes consécutives doit être un multiple de 3 (J=11, Q=12, K=13, A=1)."
+      '(s, c) => (s.length - value(c)) % 3 === 0',
+      'La difference entre la nombre de cartes déjà acceptées et la valeur de la carte jouée doit être divisible par 3 Jouer seulement des valeurs paires rouges ou des valeurs impaires noires (J=11, Q=12, K=13, A=1).',
     ],
     [
-      "(s, c) => s.length === 0 || (value(c) + value(s[s.length - 1])) % 5 === 0",
-      "La somme des valeurs de deux cartes consécutives doit être un multiple de 5 (J=11, Q=12, K=13, A=1)."
+      '(s, c) => isRed(c) === (value(c) % 2 === 1)',
+      'Jouer seulement des valeurs paires noires ou des valeurs impaires rouges (J=11, Q=12, K=13, A=1).',
     ],
     [
-      "(s, c) => s.length === 0 || (value(c) + value(s[s.length - 1])) % 5 === 2",
-      "La somme des valeurs de deux cartes consécutives doit être un multiple de 5 plus 2 (J=11, Q=12, K=13, A=1)."
+      '(s, c) => isRed(c) === (value(c) % 2 === 0)',
+      'Jouer seulement des valeurs paires rouges ou des valeurs impaires noires (J=11, Q=12, K=13, A=1).',
     ],
     [
-      "(s, c) => s.length === 0 || Math.abs(value(c) - value(s[s.length - 1])) < 5",
-      "La difference entre deux cartes consécutives doit être 4 ou moins (J=11, Q=12, K=13, A=1)."
+      '(s, c) => value(c) % 2 === 0',
+      'Jouer seulement des valeurs paires (J=11, Q=12, K=13, A=1).',
     ],
     [
-      "(s, c) => s.length === 0 || Math.abs(value(c) - value(s[s.length - 1])) < 4",
-      "La difference entre deux cartes consécutives doit être 3 ou moins (J=11, Q=12, K=13, A=1)."
+      '(s, c) => value(c) % 2 === 1',
+      'Jouer seulement des valeurs impaires (J=11, Q=12, K=13, A=1).',
     ],
-    [
-      "(s, c) => s.length === 0 || Math.abs(value(c) - value(s[s.length - 1])) < 3",
-      "La difference entre deux cartes consécutives doit être 2 ou moins (J=11, Q=12, K=13, A=1)."
-    ],
-    [
-      "(s, c) => s.length === 0 || Math.abs(value(c) - value(s[s.length - 1])) > 2",
-      "La difference entre deux cartes consécutives doit être 3 ou plus (J=11, Q=12, K=13, A=1)."
-    ],
-    [
-      "(s, c) => s.length === 0 || Math.abs(value(c) - value(s[s.length - 1])) > 3",
-      "La difference entre deux cartes consécutives doit être 4 ou plus (J=11, Q=12, K=13, A=1)."
-    ],
-    [
-      "(s, c) => s.length === 0 || Math.abs(value(c) - value(s[s.length - 1])) > 4",
-      "La difference entre deux cartes consécutives doit être 5 ou plus (J=11, Q=12, K=13, A=1)."
-    ],
-    [
-      "(s, c) => s.length === 0 || value(c) % 3 > 0 || value(s[s.length - 1]) % 3 > 0",
-      "Ne pas jouer deux valeurs multiple de 3 à la suite (J=11, Q=12, K=13, A=1)."
-    ],
-    [
-      "(s, c) => s.length === 0 || isHC(c) !== isHC(s[s.length - 1])",
-      "Alterner entre 'Coeur et Trèfle' et 'Pique et Carreau'."
-    ],
-    [
-      "(s, c) => s.length === 0 || isHC(c) !== isHC(s[s.length - 1])",
-      "Alterner entre 'Coeur et Pique' et 'Trèfle et Carreau'."
-    ],
-    [
-      "(s, c) => s.length < 2 || (value(c) !== value(s[s.length - 1]) && value(c) < value(s[s.length - 1]) !== value(s[s.length - 1]) < value(s[s.length - 2]))",
-      "Alterner entre augmenter la valeur et diminuer la valeur des cartes."
-    ],
-    [
-      "(s, c) => value(c) < s.length + 2",
-      "La valeur des cartes ne doit pas être plus que le nombre de carte acceptées plus 1 (J=11, Q=12, K=13, A=1))."
-    ],
-    [
-      "(s, c) => s.length === 0 || isPrime(c) !== isPrime(s[s.length - 1])",
-      "Alterner les valeurs qui sont et ne sont pas des nombres premiers (J=11, Q=12, K=13, A=1)."
-    ],
-    [
-      "(s, c) => isPrime(c)",
-      "Jouer seulement les valeurs qui sont des nombres premiers (J=11, Q=12, K=13, A=1)."
-    ],
-    [
-      "(s, c) => !isPrime(c)",
-      "Ne pas jouer les valeurs qui sont des nombres premiers (J=11, Q=12, K=13, A=1)."
-    ],
-    [
-      "(s, c) => (s.length - value(c)) % 3 === 0",
-      "La difference entre la nombre de cartes déjà acceptées et la valeur de la carte jouée doit être divisible par 3 Jouer seulement des valeurs paires rouges ou des valeurs impaires noires (J=11, Q=12, K=13, A=1)."
-    ],
-    [
-      "(s, c) => isRed(c) === (value(c) % 2 === 1)",
-      "Jouer seulement des valeurs paires noires ou des valeurs impaires rouges (J=11, Q=12, K=13, A=1)."
-    ],
-    [
-      "(s, c) => isRed(c) === (value(c) % 2 === 0)",
-      "Jouer seulement des valeurs paires rouges ou des valeurs impaires noires (J=11, Q=12, K=13, A=1)."
-    ],
-    [
-      "(s, c) => value(c) % 2 === 0",
-      "Jouer seulement des valeurs paires (J=11, Q=12, K=13, A=1)."
-    ],
-    [
-      "(s, c) => value(c) % 2 === 1",
-      "Jouer seulement des valeurs impaires (J=11, Q=12, K=13, A=1)."
-    ],
-    [
-      "(s, c) => value(c) % 3 === 0",
-      "Jouer seulement les valeurs qui sont des multiples de 3 (J=11, Q=12, K=13, A=1)."
-    ],
-    [
-      "(s, c) => value(c) % 3 === 1",
-      "Jouer seulement les valeurs qui sont des multiples de 3 plus 1 (J=11, Q=12, K=13, A=1)."
-    ],
-    [
-      "(s, c) => s.length % 2 === 0 || isFigure(c)",
-      "Une carte sur deux doit être une Tête (J, Q or K)."
-    ]
-  ]
+  ],
 };
