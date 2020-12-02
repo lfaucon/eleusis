@@ -24,10 +24,20 @@ const RobotRulePicker = ({ setRule }) => {
   const handleChoice = (e) => {
     if (e.target.value === 'easy') setRule(pick(rules.easy));
     else if (e.target.value === 'medium')
-      setRule(pick([...rules.easy, ...rules.medium]));
-    else if (e.target.value === 'hard')
-      setRule(pick([...rules.easy, ...rules.medium, ...rules.hard]));
-    else setRule(null);
+      setRule(pick([...rules.easy, ...rules.medium, ...rules.medium]));
+    else if (e.target.value === 'hard') {
+      console.log('hard');
+      setRule(
+        pick([
+          ...rules.easy,
+          ...rules.medium,
+          ...rules.medium,
+          ...rules.hard,
+          ...rules.hard,
+          ...rules.hard,
+        ]),
+      );
+    } else setRule(null);
   };
 
   return (
@@ -70,6 +80,7 @@ const GeekRulePicker = ({ setRule }) => {
 
   const loadExample = () => {
     setTempRule(pick([...rules.easy, ...rules.medium, ...rules.hard]));
+    setRule(null);
   };
 
   const testRule = (r) => {
@@ -100,7 +111,7 @@ const GeekRulePicker = ({ setRule }) => {
         1000 - acceptedCount
       } rejected`,
     );
-    setRule(tempRule);
+    setRule(r);
   };
 
   const testAll = () => {
@@ -149,7 +160,7 @@ const GeekRulePicker = ({ setRule }) => {
         Test your rule with randomly generated sequences of cards, then start
         the game if it seems to work as intended
       </span>
-      <button onClick={() => testAll(tempRule)}>Test Rule</button>
+      <button onClick={() => testRule(tempRule)}>Test Rule</button>
       <span className="doc">{testOutput}</span>
     </React.Fragment>
   );
