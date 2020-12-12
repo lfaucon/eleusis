@@ -350,3 +350,8 @@ input::-webkit-inner-spin-button {
 input[type='number'] {
   -moz-appearance: textfield;
 }
+
+.disclaimer {
+  margin-top: 64px;
+  font-size: 12px;
+}

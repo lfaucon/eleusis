@@ -9,6 +9,9 @@ import MasterPicker from './components/MasterPicker';
 import GamePicker from './components/GamePicker';
 import NamePicker from './components/NamePicker';
 import Header from './components/Header';
+import { getSecretCookie, getDataPreference } from './utils';
+
+const cookie = getSecretCookie();
 
 var UNSUBSCRIBE_FIREBASE = null;
 const startAutomaticUpdates = (gameId, setGame) => {
@@ -106,6 +109,19 @@ const App = () => {
   const [name, setName] = useState(urlParams.get('n'));
   const [game, setGame] = useState(null);
 
+  const logger = (payload) => {
+    if (getDataPreference() === 'RETRACTED') return;
+    const db = firebase.firestore();
+    const { cardSequence, statusSequence, id } = game || {};
+    const gameInfo = game ? { id, cardSequence, statusSequence, name } : {};
+    db.collection('logs').add({
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      payload,
+      gameInfo,
+      cookie,
+    });
+  };
+
   const _setGameId = (g) => {
     var queryParams = new URLSearchParams(window.location.search);
     queryParams.set('g', g);
@@ -121,7 +137,7 @@ const App = () => {
   };
 
   if (!gameId) {
-    return <GamePicker setGameId={_setGameId} />;
+    return <GamePicker setGameId={_setGameId} logger={logger} />;
   }
 
   if (!game) {
@@ -140,7 +156,7 @@ const App = () => {
   }
 
   if (!game.master) {
-    return <MasterPicker game={game} name={name} />;
+    return <MasterPicker game={game} name={name} logger={logger} />;
   }
 
   return (
@@ -148,7 +164,7 @@ const App = () => {
       <Header game={game} name={name} />
       <div id="tableContainer">
         <Table game={game} name={name} sequence={sequence} />
-        <SidePanel game={game} name={name} />
+        <SidePanel game={game} name={name} logger={logger} />
       </div>
       {!game.ended ? (
         <Deck game={game} name={name} sequence={sequence} />

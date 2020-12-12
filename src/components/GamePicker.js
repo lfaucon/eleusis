@@ -1,15 +1,26 @@
 import React, { useState } from 'react';
 import firebase from 'firebase/app';
+import { generateId, getDataPreference } from '../utils';
 
-const alphabet = 'QWERTZUIOPLKJHGFDSAYXCVBNM1234567890';
-const pick = (a) => a[Math.floor(Math.random() * a.length)];
-const generateId = (n) => (n > 0 ? pick(alphabet) + generateId(n - 1) : '');
-
-const GamePicker = ({ setGameId }) => {
+const GamePicker = ({ setGameId, logger }) => {
   const [tempId, setTempId] = useState(null);
+
+  const [preference, setPreference] = useState(getDataPreference());
+
+  const retractFromScience = () => {
+    if (preference === 'OK') {
+      window.localStorage.setItem('eleusisDataPreference', 'RETRACTED');
+      setPreference('RETRACTED');
+      alert('You have withdrawn from anonymous data collection');
+    } else {
+      window.localStorage.setItem('eleusisDataPreference', 'OK');
+      setPreference('OK');
+    }
+  };
 
   const createGame = () => {
     const gameId = generateId(6);
+    logger({ create: gameId });
     const db = firebase.firestore();
     db.collection('games').doc(gameId).set({
       id: gameId,
@@ -40,6 +51,22 @@ const GamePicker = ({ setGameId }) => {
       </div>
       <span>Or create a game:</span>
       <button onClick={createGame}>Create game</button>
+      {preference === 'OK' && (
+        <span className="disclaimer">
+          Interaction with the game is anonymously recorded for the benefit of
+          science. <br />
+          Click <u onClick={retractFromScience}>here</u> to withdraw from the
+          data collection.
+        </span>
+      )}
+      {preference === 'RETRACTED' && (
+        <span className="disclaimer">
+          You have chosen to not share your data anonymously.
+          <br />
+          Click <u onClick={retractFromScience}>here</u> to decide to share your
+          data again.
+        </span>
+      )}
     </div>
   );
 };

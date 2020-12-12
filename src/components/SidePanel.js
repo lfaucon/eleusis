@@ -19,7 +19,7 @@ const computeScore = (p) => {
   return (Math.log(p) + Math.log(2)) / Math.log(2);
 };
 
-const ActionBet = ({ name, game }) => {
+const ActionBet = ({ name, game, logger }) => {
   const [bet, setBet] = useState(500);
 
   const submitBet = () => {
@@ -27,6 +27,7 @@ const ActionBet = ({ name, game }) => {
       alert('You can only submit a bet between 0.001 and 0.999');
       return;
     }
+    logger({ bet: bet / 1000 });
     const db = firebase.firestore();
     db.collection('games')
       .doc(game.id)
@@ -41,7 +42,7 @@ const ActionBet = ({ name, game }) => {
         min="1"
         max="999"
         value={bet}
-        class="slider"
+        className="slider"
         id="myRange"
         onChange={(e) => setBet(e.target.value)}
       />
@@ -73,13 +74,16 @@ const ActionSelect = () => {
   return <div>Select a card below</div>;
 };
 
-const ActionRule = ({ game, name }) => {
+const ActionRule = ({ game, name, logger }) => {
   const { turn, cardSequence, statusSequence, selected } = game;
   const players = game.players.filter((p) => p !== game.master);
 
   const handleRule = (accepted) => {
     cardSequence.push(selected);
     statusSequence.push(accepted);
+
+    logger({ accepted });
+
     const db = firebase.firestore();
 
     const databaseUpdate = {
@@ -119,16 +123,16 @@ const ActionRule = ({ game, name }) => {
   );
 };
 
-const Action = ({ game, name }) => {
+const Action = ({ game, name, logger }) => {
   const { turn, selected } = game;
   const players = game.players.filter((p) => p !== game.master);
   const mustBet = players.filter((p) => !game['bet_' + p]);
 
   var action = null;
   if (selected && mustBet.length === 0 && name === game.leader)
-    action = <ActionRule game={game} />;
+    action = <ActionRule game={game} logger={logger} />;
   if (selected && mustBet.includes(name))
-    action = <ActionBet game={game} name={name} />;
+    action = <ActionBet game={game} name={name} logger={logger} />;
   if (!selected && players[turn % players.length] === name)
     action = <ActionSelect game={game} />;
   if (action)
@@ -141,34 +145,54 @@ const Action = ({ game, name }) => {
   return null;
 };
 
-const Status = ({ game }) => {
+const Status = ({ game, name }) => {
   const { turn, selected } = game;
   const players = game.players.filter((p) => p !== game.master);
   const mustBet = players.filter((p) => !game['bet_' + p]);
+  // TODO: finish and test feature to kick players
+  // const isLeader = game.leader === name;
+  const isLeader = false;
+
+  const Waiting = ({ who }) => {
+    const kick = () => {
+      const db = firebase.firestore();
+      db.collection('games')
+        .doc(game.id)
+        .set(
+          { players: game.players.filter((p) => p != who) },
+          { merge: true },
+        );
+    };
+
+    return (
+      <div>
+        Waiting for {who} . . . {isLeader && <button>kick</button>}
+      </div>
+    );
+  };
 
   return (
     <div>
       <h3>Game Status</h3>
-      {selected && mustBet.map((p) => <div key={p}>Waiting for {p} . . .</div>)}
-      {selected && mustBet.length === 0 && (
-        <div>Waiting for {game.master} . . .</div>
-      )}
+      {selected && mustBet.map((p) => <Waiting who={game.master} key={p} />)}
+      {selected && mustBet.length === 0 && <Waiting who={game.master} />}
       {!selected && (
-        <div>
-          Waiting for {players[turn % players.length] || 'other players'} . . .
-        </div>
+        <Waiting who={players[turn % players.length] || 'other players'} />
       )}
     </div>
   );
 };
 
-const SidePanel = ({ game, name }) => {
+const SidePanel = ({ game, name, logger }) => {
   const { ended } = game;
   return (
     <div id="sidepanel">
+      <span>
+        <b>Game master:</b> {game.master}
+      </span>
       <ScoreBoard game={game} />
-      {!ended && <Status game={game} />}
-      {!ended && <Action game={game} name={name} />}
+      {!ended && <Status game={game} name={name} />}
+      {!ended && <Action game={game} name={name} logger={logger} />}
     </div>
   );
 };

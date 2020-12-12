@@ -114,13 +114,6 @@ const GeekRulePicker = ({ setRule }) => {
     setRule(r);
   };
 
-  const testAll = () => {
-    [...rules.easy, ...rules.medium, ...rules.hard].forEach((r) => {
-      console.log(r);
-      testRule(r);
-    });
-  };
-
   return (
     <React.Fragment>
       <p>Specify your rule by implementing a JavaScript function.</p>
@@ -166,13 +159,14 @@ const GeekRulePicker = ({ setRule }) => {
   );
 };
 
-const MasterPicker = ({ game, name }) => {
+const MasterPicker = ({ game, name, logger }) => {
   const [gameType, setGameType] = useState(null);
   const [rule, setRule] = useState(null);
 
   const startGame = () => {
     const db = firebase.firestore();
     const master = gameType === 'robot' ? 'Talos 6.0' : name;
+    logger({ master, rule, gameType, leader: name });
     db.collection('games')
       .doc(game.id)
       .set({ master, rule, gameType, leader: name }, { merge: true });
@@ -181,8 +175,8 @@ const MasterPicker = ({ game, name }) => {
   return (
     <div className="picker">
       <span>
-        Agree with your friends on who should be the Game Master. Only the game
-        master should click "Start Game" below.
+        Agree with your friends on who should be the Game Master. Only the Game
+        Master should click "Start Game" below.
       </span>
       <br />
       <select onChange={(e) => setGameType(e.target.value)}>

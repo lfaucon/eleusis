@@ -15,7 +15,6 @@ const Header = ({ game, name }) => {
       gameType: '',
       statusSequence: [],
       cardSequence: [],
-      turn: 0,
       ended: false,
     };
     players.forEach((p) => {
