@@ -45,6 +45,7 @@ const Table = ({ game, name, sequence }) => {
           top: 183,
           borderBottom: '2px solid black',
           width: sequence.length * 128 + 700,
+          minWidth: '100%',
           zIndex: 0,
         }}
       >
