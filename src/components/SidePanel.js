@@ -174,7 +174,7 @@ const Status = ({ game, name }) => {
   return (
     <div>
       <h3>Game Status</h3>
-      {selected && mustBet.map((p) => <Waiting who={game.master} key={p} />)}
+      {selected && mustBet.map((p) => <Waiting who={p} key={p} />)}
       {selected && mustBet.length === 0 && <Waiting who={game.master} />}
       {!selected && (
         <Waiting who={players[turn % players.length] || 'other players'} />

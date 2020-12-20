@@ -26,7 +26,6 @@ const RobotRulePicker = ({ setRule }) => {
     else if (e.target.value === 'medium')
       setRule(pick([...rules.easy, ...rules.medium, ...rules.medium]));
     else if (e.target.value === 'hard') {
-      console.log('hard');
       setRule(
         pick([
           ...rules.easy,

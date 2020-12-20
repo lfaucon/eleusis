@@ -112,8 +112,10 @@ const App = () => {
   const logger = (payload) => {
     if (getDataPreference() === 'RETRACTED') return;
     const db = firebase.firestore();
-    const { cardSequence, statusSequence, id } = game || {};
-    const gameInfo = game ? { id, cardSequence, statusSequence, name } : {};
+    const { cardSequence, statusSequence, id, selected } = game || {};
+    const gameInfo = game
+      ? { id, cardSequence, statusSequence, name, selected }
+      : {};
     db.collection('logs').add({
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       payload,
