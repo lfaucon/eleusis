@@ -35,7 +35,7 @@ const NamePicker = ({ game, setName }) => {
           {p}
         </button>
       ))}
-      <div class="inputContainer">
+      <div className="inputContainer">
         <input
           placeholder="Add name"
           type="text"
