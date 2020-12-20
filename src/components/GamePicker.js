@@ -39,7 +39,7 @@ const GamePicker = ({ setGameId, logger }) => {
       <h1>ELEUSIS 2</h1>
       <h2>Welcome!</h2>
       <span>Join a game:</span>
-      <div>
+      <div class="inputContainer">
         <input
           type="text"
           placeholder="Game ID"

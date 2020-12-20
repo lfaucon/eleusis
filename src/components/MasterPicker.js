@@ -56,7 +56,7 @@ const RobotRulePicker = ({ setRule }) => {
 
 const HumanRulePicker = ({ setRule }) => {
   return (
-    <div>
+    <React.Fragment>
       <p>
         Specify your rule with one or a few short sentences. You will have to
         accept or reject cards manually
@@ -67,7 +67,7 @@ const HumanRulePicker = ({ setRule }) => {
         cols="50"
         onChange={(e) => setRule(e.target.value)}
       />
-    </div>
+    </React.Fragment>
   );
 };
 

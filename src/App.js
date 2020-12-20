@@ -3,7 +3,7 @@ import firebase from 'firebase/app';
 
 import './App.css';
 
-import Deck from './components/Deck';
+import Controls from './components/Controls';
 import SidePanel from './components/SidePanel';
 import MasterPicker from './components/MasterPicker';
 import GamePicker from './components/GamePicker';
@@ -39,6 +39,17 @@ const Table = ({ game, name, sequence }) => {
   };
   return (
     <div id="table">
+      <span
+        style={{
+          position: 'absolute',
+          top: 183,
+          borderBottom: '2px solid black',
+          width: sequence.length * 128 + 700,
+          zIndex: 0,
+        }}
+      >
+        Accepted
+      </span>
       {sequence &&
         sequence.map(({ card, accepted }, i) => {
           if (accepted) {
@@ -63,7 +74,7 @@ const Table = ({ game, name, sequence }) => {
       {selected && (
         <img
           src={'cards/' + selected + '.png'}
-          style={{ top: 0, left: style.left + 256, marginTop: 15 }}
+          style={{ top: 0, left: style.left + 300, marginTop: 110 }}
           className="card selected"
           alt={'card ' + selected}
         />
@@ -72,9 +83,9 @@ const Table = ({ game, name, sequence }) => {
       {selected && (
         <span
           style={{
-            top: 40,
-            left: style.left + 278,
-            color: '#f00b',
+            marginTop: 135,
+            left: style.left + 232,
+            color: '#020',
             fontSize: '120px',
             position: 'absolute',
           }}
@@ -82,15 +93,6 @@ const Table = ({ game, name, sequence }) => {
           ?
         </span>
       )}
-      <div
-        style={{
-          top: -14,
-          left: style.left + 600,
-          position: 'absolute',
-        }}
-      >
-        ...
-      </div>
     </div>
   );
 };
@@ -108,6 +110,7 @@ const App = () => {
   const [gameId, setGameId] = useState(urlParams.get('g'));
   const [name, setName] = useState(urlParams.get('n'));
   const [game, setGame] = useState(null);
+  const [showSidePanel, setShowSidePanel] = useState(true);
 
   const logger = (payload) => {
     if (getDataPreference() === 'RETRACTED') return;
@@ -166,24 +169,19 @@ const App = () => {
       <Header game={game} name={name} />
       <div id="tableContainer">
         <Table game={game} name={name} sequence={sequence} />
-        <SidePanel game={game} name={name} logger={logger} />
+        {showSidePanel && <SidePanel game={game} name={name} logger={logger} />}
+        <button
+          id="sidePanelToggle"
+          onClick={() => setShowSidePanel(!showSidePanel)}
+        >
+          {showSidePanel ? 'hide info' : 'show info'}
+        </button>
       </div>
       {!game.ended ? (
-        <Deck game={game} name={name} sequence={sequence} />
+        <Controls game={game} name={name} sequence={sequence} logger={logger} />
       ) : (
         <div id="input">
-          <textarea
-            value={game.rule}
-            disabled={true}
-            style={{
-              resize: 'none',
-              width: 'calc(100% - 12px)',
-              height: 'calc(100% - 12px)',
-              fontSize: '16px',
-              background: 'white',
-              color: 'black',
-            }}
-          />
+          <textarea id="displayRule" value={game.rule} disabled={true} />
         </div>
       )}
     </div>
