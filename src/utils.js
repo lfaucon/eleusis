@@ -5,6 +5,7 @@ export const generateId = (n) =>
   n > 0 ? pick(alphabet) + generateId(n - 1) : '';
 
 export const getSecretCookie = () => {
+  if (!window.localStorage) return 'NO_LOCAL_STORAGE';
   var cookie = window.localStorage.getItem('eleusisSecretCookie');
   if (!cookie) {
     cookie = generateId(16);
@@ -14,6 +15,7 @@ export const getSecretCookie = () => {
 };
 
 export const getDataPreference = () => {
+  if (!window.localStorage) return 'RETRACTED';
   var preference = window.localStorage.getItem('eleusisDataPreference');
   if (!preference) {
     preference = 'OK';

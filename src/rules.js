@@ -164,32 +164,12 @@ const french = {
       'Alterner entre augmenter la valeur et diminuer la valeur des cartes.',
     ],
     [
-      '(s, c) => value(c) < s.length + 2',
-      'La valeur des cartes ne doit pas être plus que le nombre de carte acceptées plus 1 (J=11, Q=12, K=13, A=1)).',
-    ],
-    [
       '(s, c) => s.length === 0 || isPrime(c) !== isPrime(s[s.length - 1])',
       'Alterner les valeurs qui sont et ne sont pas des nombres premiers (J=11, Q=12, K=13, A=1).',
     ],
     [
       '(s, c) => (s.length - value(c)) % 3 === 0',
-      'La difference entre la nombre de cartes déjà acceptées et la valeur de la carte jouée doit être divisible par 3 Jouer seulement des valeurs paires rouges ou des valeurs impaires noires (J=11, Q=12, K=13, A=1).',
-    ],
-    [
-      '(s, c) => isRed(c) === (value(c) % 2 === 1)',
-      'Jouer seulement des valeurs paires noires ou des valeurs impaires rouges (J=11, Q=12, K=13, A=1).',
-    ],
-    [
-      '(s, c) => isRed(c) === (value(c) % 2 === 0)',
-      'Jouer seulement des valeurs paires rouges ou des valeurs impaires noires (J=11, Q=12, K=13, A=1).',
-    ],
-    [
-      '(s, c) => value(c) % 2 === 0',
-      'Jouer seulement des valeurs paires (J=11, Q=12, K=13, A=1).',
-    ],
-    [
-      '(s, c) => value(c) % 2 === 1',
-      'Jouer seulement des valeurs impaires (J=11, Q=12, K=13, A=1).',
+      'La difference entre le nombre de cartes déjà acceptées et la valeur de la carte jouée doit être divisible par 3 Jouer seulement des valeurs paires rouges ou des valeurs impaires noires (J=11, Q=12, K=13, A=1).',
     ],
   ],
 };
