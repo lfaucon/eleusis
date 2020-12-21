@@ -396,3 +396,9 @@ input[type='number'] {
   height: calc(100% - 8px);
   max-width: calc(100% - 8px);
 }
+
+.warning {
+  background-color: orange;
+  color: black;
+  margin-bottom: 8px;
+}
