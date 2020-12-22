@@ -139,7 +139,7 @@ const ActionRule = ({ game, name, logger }) => {
     cardSequence.push(selected);
     statusSequence.push(accepted);
 
-    logger({ accepted });
+    //logger({ accepted });
 
     const db = firebase.firestore();
 

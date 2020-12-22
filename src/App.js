@@ -13,6 +13,7 @@ import { getSecretCookie, getDataPreference } from './utils';
 
 const cookie = getSecretCookie();
 
+var DB_ERROR_TIMEOUT = null;
 var UNSUBSCRIBE_FIREBASE = null;
 const startAutomaticUpdates = (gameId, setGame) => {
   const db = firebase.firestore();
@@ -112,6 +113,7 @@ const App = () => {
   const [name, setName] = useState(urlParams.get('n'));
   const [game, setGame] = useState(null);
   const [showSidePanel, setShowSidePanel] = useState(true);
+  const [dbError, setDbError] = useState(false);
 
   const logger = (payload) => {
     if (getDataPreference() === 'RETRACTED') return;
@@ -146,8 +148,29 @@ const App = () => {
     return <GamePicker setGameId={_setGameId} logger={logger} />;
   }
 
+  if (dbError) {
+    return (
+      <div className="picker">
+        <span className="warning">
+          Either you entered an incorrect Game ID or Multiplayer features might
+          be temporarily unavailable because of too much demand on our database.
+          You can still play the game individually by letting Eleusis choose the
+          rules. <br /> Sorry for the inconvenience.
+        </span>
+        <a href="/">Go Back</a>
+      </div>
+    );
+  }
+
   if (!game) {
-    startAutomaticUpdates(gameId, setGame);
+    if (DB_ERROR_TIMEOUT) clearTimeout(DB_ERROR_TIMEOUT);
+    DB_ERROR_TIMEOUT = setTimeout(() => {
+      setDbError(true);
+    }, 5000);
+    startAutomaticUpdates(gameId, (x) => {
+      if (x && DB_ERROR_TIMEOUT) clearTimeout(DB_ERROR_TIMEOUT);
+      setGame(x);
+    });
     return <div>loading . . .</div>;
   }
 

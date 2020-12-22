@@ -20,7 +20,7 @@ const GamePicker = ({ setGameId, logger }) => {
 
   const createGame = () => {
     const gameId = generateId(6);
-    logger({ create: gameId });
+    //logger({ create: gameId });
     const db = firebase.firestore();
     db.collection('games').doc(gameId).set({
       id: gameId,
@@ -38,11 +38,6 @@ const GamePicker = ({ setGameId, logger }) => {
     <div className="picker">
       <h1>ELEUSIS 2</h1>
       <h2>Welcome!</h2>
-      <span className="warning">
-        Multiplayer features might be temporarily unavailable because of too
-        much demand on our database. You can still play the game individually by
-        letting Eleusis choose the rules. <br /> Sorry for the inconvenience.
-      </span>
       <span>Join a game:</span>
       <div className="inputContainer">
         <input
