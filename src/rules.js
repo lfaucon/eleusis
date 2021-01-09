@@ -96,9 +96,9 @@ export default {
     '//After red decrease, else increase or equal \n(card, history) => !getLast(history) || isRed(getLast(history)) === (getValue(getLast(history)) < getValue(card))',
     '//After black decrease, else increase or equal \n(card, history) => !getLast(history) || isBlack(getLast(history)) === (getValue(getLast(history)) < getValue(card))',
     '//Alternate (Heart and Spade) and not\n(card, history) => "HS".includes(getSymbol(card)) !== "HS".includes(getSymbol(getLast(history)))',
-    '//Alternate (Heart and Clubs) and not\n(card, history) => "HS".includes(getSymbol(card)) !== "HC".includes(getSymbol(getLast(history)))',
-    '//Alternate (Diamond and Spade) and not\n(card, history) => "HS".includes(getSymbol(card)) !== "DS".includes(getSymbol(getLast(history)))',
-    '//Alternate (Diamond and Clubs) and not\n(card, history) => "HS".includes(getSymbol(card)) !== "DC".includes(getSymbol(getLast(history)))',
+    '//Alternate (Heart and Clubs) and not\n(card, history) => "HC".includes(getSymbol(card)) !== "HC".includes(getSymbol(getLast(history)))',
+    '//Alternate (Diamond and Spade) and not\n(card, history) => "DS".includes(getSymbol(card)) !== "DS".includes(getSymbol(getLast(history)))',
+    '//Alternate (Diamond and Clubs) and not\n(card, history) => "DC".includes(getSymbol(card)) !== "DC".includes(getSymbol(getLast(history)))',
     '//Sum of consecutive values must be prime\n(card, history) => !getLast(history) || [2, 3, 5, 7, 11, 13, 17, 19, 23].includes(getValue(card)+getValue(getLast(card)))',
   ],
   hard: [
