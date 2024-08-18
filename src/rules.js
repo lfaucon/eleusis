@@ -100,6 +100,7 @@ export default {
     '//Alternate (Diamond and Spade) and not\n(card, history) => "DS".includes(getSymbol(card)) !== "DS".includes(getSymbol(getLast(history)))',
     '//Alternate (Diamond and Clubs) and not\n(card, history) => "DC".includes(getSymbol(card)) !== "DC".includes(getSymbol(getLast(history)))',
     '//Sum of consecutive values must be prime\n(card, history) => !getLast(history) || [2, 3, 5, 7, 11, 13, 17, 19, 23].includes(getValue(card)+getValue(getLast(card)))',
+    '//The last two cards must be coprime\n(card, history) => !getLast(history) || ![2, 3, 5, 7, 11, 13].find(q => getValue(card) % q === 0 && getValue(getLast(history)) % q === 0)',
   ],
   hard: [
     '//Accept at most 2 cards for each symbol\n(card, history) => history.filter(c => getSymbol(c) === getSymbol(card)).length < 2',
